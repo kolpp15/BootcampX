@@ -10,12 +10,12 @@ const { Pool } = require('pg');
 const pool = new Pool();
 
 pool.connect()
-.then(() => {
-  console.log('db connected');
-})
-.catch((err) => {
-  console.log('db connection error:', err.stack);
-});
+  .then(() => {
+    console.log('db connected');
+  })
+  .catch((err) => {
+    console.log('db connection error:', err.stack);
+  });
 
 
 // ----------------------------BASIC SQL USING JS to print out the RESULT ROWS
@@ -66,7 +66,7 @@ JOIN cohorts ON cohorts.id = cohort_id
 WHERE cohorts.name LIKE '%${cohortName}%'
 LIMIT ${maxResult || 5};
 `)
-.then(res => {
+  .then(res => {
     res.rows.forEach(user => {
       console.log(`${user.name} has an id of ${user.student_id} and was in the ${user.cohort} cohort`);
     });
