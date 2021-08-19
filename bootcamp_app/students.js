@@ -56,16 +56,17 @@ pool.connect()
 
 // ----------------------------- USING PROCESS.ARGV
 
-const cohortName = process.argv[2];
-const maxResult = process.argv[3];
+const cohortName = process.argv[2]; // $1 = values[0]
+const limit = process.argv[3] || 5; // $2 = values[1]
+const values = [`%${cohortName}%`, limit]; // store all malicious values as an array
 
 pool.query(`
 SELECT students.id as student_id, students.name as name, cohorts.name as cohort
 FROM students
 JOIN cohorts ON cohorts.id = cohort_id
-WHERE cohorts.name LIKE '%${cohortName}%'
-LIMIT ${maxResult || 5};
-`)
+WHERE cohorts.name LIKE $1
+LIMIT $2;
+`, values) // THIS PART IS IMPORTANT
   .then(res => {
     res.rows.forEach(user => {
       console.log(`${user.name} has an id of ${user.student_id} and was in the ${user.cohort} cohort`);
